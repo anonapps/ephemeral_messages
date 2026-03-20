@@ -1,0 +1,16 @@
+{
+  "name": "worker",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev src/index.ts --port 8787",
+    "build": "wrangler deploy src/index.ts --dry-run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@cloudflare/workers-types": "4.20250303.0"
+  },
+  "devDependencies": {
+    "typescript": "5.8.2",
+    "wrangler": "4.6.0"
+  }
+}
