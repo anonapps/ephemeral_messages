@@ -1,0 +1,7 @@
+name = "ephemeral-messages-api"
+main = "src/index.ts"
+compatibility_date = "2026-03-20"
+
+[vars]
+RATE_LIMIT_MAX = "20"
+ALLOWED_ORIGIN = "http://localhost:3000"
