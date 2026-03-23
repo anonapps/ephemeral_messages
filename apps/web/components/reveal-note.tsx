@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import { readNote } from '@/lib/api';
@@ -7,6 +8,12 @@ import { decryptMessage } from '@/lib/crypto';
 import { REVEAL_SECONDS } from '@/lib/constants';
 
 type RevealState = 'idle' | 'loading' | 'revealed' | 'destroyed' | 'error' | 'cleared';
+
+function getTimerClass(seconds: number) {
+  if (seconds <= 10) return 'text-red-400 font-semibold';
+  if (seconds <= 20) return 'text-red-400';
+  return 'text-slate-300';
+}
 
 export function RevealNote({ id }: { id: string }) {
   const [state, setState] = useState<RevealState>('idle');
@@ -82,10 +89,17 @@ export function RevealNote({ id }: { id: string }) {
             <pre className="whitespace-pre-wrap break-words font-sans text-sm text-slate-100">{message}</pre>
           </div>
         ) : (
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-slate-300">Message cleared from the screen.</div>
+          <div className="space-y-3">
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-slate-300">
+              Message safely and permanently deleted
+            </div>
+            <Link className="text-sm text-cyan-400 hover:underline" href="/">
+              Back to create a new secure note.
+            </Link>
+          </div>
         )}
-        <p className="text-xs text-slate-400">
-          {message ? `This view clears in ${secondsLeft}s.` : 'Refresh is not possible after the encrypted payload is consumed.'}
+        <p className={`text-xs ${message ? getTimerClass(secondsLeft) : 'text-slate-400'}`}>
+          {message ? `This message disappears in ${secondsLeft}s.` : 'Refresh is not possible after the encrypted message is displayed.'}
         </p>
       </div>
     );

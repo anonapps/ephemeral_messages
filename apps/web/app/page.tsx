@@ -1,10 +1,12 @@
+import Link from 'next/link';
+
 import { Card } from '@/components/card';
 import { CreateNoteForm } from '@/components/create-note-form';
 
 export default function HomePage() {
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-5xl items-center px-6 py-12">
-      <div className="grid w-full gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+    <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col px-6 py-12">
+      <div className="grid w-full flex-1 items-center gap-8 lg:grid-cols-[1.1fr_0.9fr]">
         <section className="space-y-6">
           <span className="inline-flex rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-cyan-200">
             Zero-knowledge messaging
@@ -17,12 +19,12 @@ export default function HomePage() {
               Messages are encrypted in the browser with AES-GCM. The server stores only ciphertext in Redis, while the decryption key stays in the URL fragment.
             </p>
           </div>
-          <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-white/50">
-            <span>Client-side encryption only</span>
-            <span className="opacity-30">•</span>
-            <span>Atomic first-read deletion</span>
-            <span className="opacity-30">•</span>
-            <span>Auto-expiring links</span>
+          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-400">
+            <span>Client-side encryption <span className="text-emerald-400">✔️</span></span>
+            <span>Atomic first-read deletion <span className="text-emerald-400">✔️</span></span>
+            <span>Auto-expiring links <span className="text-emerald-400">✔️</span></span>
+            <span>No logs <span className="text-emerald-400">✔️</span></span>
+            <span>Immediate availability <span className="text-emerald-400">✔️</span></span>
           </div>
         </section>
 
@@ -30,6 +32,11 @@ export default function HomePage() {
           <CreateNoteForm />
         </Card>
       </div>
+      <footer className="pt-10 text-center">
+        <Link className="text-sm text-white/40 transition hover:text-white/70" href="/faq">
+          FAQ
+        </Link>
+      </footer>
     </main>
   );
 }

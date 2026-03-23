@@ -10,7 +10,7 @@ export default async function NotePage({ params }: { params: Promise<{ id: strin
         <div className="space-y-2 text-center">
           <p className="text-xs font-medium uppercase tracking-[0.2em] text-cyan-200">Secure note</p>
           <h1 className="text-3xl font-semibold tracking-tight text-white">Reveal your message</h1>
-          <p className="text-sm text-slate-300">Opening this note consumes the encrypted payload from storage.</p>
+          <p className="text-sm text-slate-300">Opening this note consumes your encrypted payload</p>
         </div>
         <Card>
           <RevealNote id={id} />
