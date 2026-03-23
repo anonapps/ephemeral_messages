@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, '') ?? 'http://127.0.0.1:8787';
+const API_BASE_URL = "https://ephemeral-messages-api.anonapps.workers.dev";
 
 export async function createNote(ciphertext: string, ttl: number): Promise<{ id: string }> {
   const response = await fetch(`${API_BASE_URL}/note`, {
