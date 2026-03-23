@@ -17,10 +17,12 @@ export default function HomePage() {
               Messages are encrypted in the browser with AES-GCM. The server stores only ciphertext in Redis, while the decryption key stays in the URL fragment.
             </p>
           </div>
-          <div className="grid gap-3 text-sm text-slate-300 sm:grid-cols-3">
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">Client-side encryption only</div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">Atomic first-read deletion</div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">Auto-expiring links</div>
+          <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-white/50">
+            <span>Client-side encryption only</span>
+            <span className="opacity-30">•</span>
+            <span>Atomic first-read deletion</span>
+            <span className="opacity-30">•</span>
+            <span>Auto-expiring links</span>
           </div>
         </section>
 
