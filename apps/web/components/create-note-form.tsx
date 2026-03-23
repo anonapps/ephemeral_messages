@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useMemo, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useState } from 'react';
 
 import { createNote } from '@/lib/api';
 import { encryptMessage } from '@/lib/crypto';
@@ -16,15 +16,25 @@ export function CreateNoteForm() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const byteLength = useMemo(() => new TextEncoder().encode(message).length, [message]);
   const isTooLarge = byteLength > MAX_BYTES;
   const showSoftWarning = byteLength > SOFT_WARNING_BYTES;
 
+  useEffect(() => {
+    if (!copied) return;
+
+    const timeoutId = window.setTimeout(() => setCopied(false), 2000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [copied]);
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
     setShareUrl(null);
+    setCopied(false);
 
     if (!message.trim()) {
       setError('Enter a message before creating a link.');
@@ -52,7 +62,26 @@ export function CreateNoteForm() {
 
   async function handleCopy() {
     if (!shareUrl) return;
-    await navigator.clipboard.writeText(shareUrl);
+
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+    } catch {
+      const textarea = document.createElement('textarea');
+      textarea.value = shareUrl;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'absolute';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+
+      const copied = document.execCommand('copy');
+      document.body.removeChild(textarea);
+
+      if (copied) {
+        setCopied(true);
+      }
+    }
   }
 
   return (
@@ -117,8 +146,16 @@ export function CreateNoteForm() {
         <div className="space-y-3 rounded-2xl border border-emerald-400/20 bg-emerald-400/10 p-4 text-sm text-emerald-50">
           <p>Share this link. The decryption key is only inside the URL fragment and is never sent to the server.</p>
           <code className="block overflow-x-auto rounded-xl bg-slate-950/70 p-3 text-xs text-slate-100">{shareUrl}</code>
-          <button className="rounded-xl border border-emerald-300/30 px-3 py-2 font-medium" onClick={handleCopy} type="button">
-            Copy link
+          <button
+            className={`rounded-xl border px-3 py-2 font-medium transition-all duration-200 ease-out ${
+              copied
+                ? 'scale-95 border-emerald-400/30 bg-emerald-500/10 text-emerald-400'
+                : 'border-white/10 bg-transparent text-slate-300 hover:scale-105 hover:bg-white/5 active:scale-95'
+            }`}
+            onClick={handleCopy}
+            type="button"
+          >
+            {copied ? '✓ Copied' : 'Copy link'}
           </button>
         </div>
       ) : null}
